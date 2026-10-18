@@ -7,18 +7,38 @@ st.set_page_config(
     page_title="PulseTriage - DM Decision Engine", page_icon="🏥", layout="wide"
 )
 
-# Custom Styling (Light Coral Red Gradient at Top)
+# Custom Styling (Coral Red -> Soft Lavender Gradient & Accent Headers)
 st.markdown(
     """
     <style>
-    /* App Background Gradient: Light Coral Red (#FFE4E1) at Top fading to Slate Gray (#F1F5F9) */
+    /* Main App Background Gradient: Coral Red -> Soft Lavender -> Light Slate */
     .stApp {
-        background: linear-gradient(180deg, #FFE4E1 0%, #F8FAFC 22%, #F1F5F9 100%);
-        background-attachment: fixed;
+        background: linear-gradient(180deg, #FFE4E1 0%, #E9D5FF 40%, #F1F5F9 100%) !important;
+        background-attachment: fixed !important;
     }
     
-    .main-header { font-size: 2.2rem; font-weight: 700; color: #1E293B; }
-    .sub-header { font-size: 1.1rem; color: #64748B; margin-bottom: 20px; }
+    /* Subtitles & Section Headers */
+    .sub-header { 
+        font-size: 1.15rem; 
+        color: #5B21B6 !important; 
+        font-weight: 600;
+        margin-bottom: 20px; 
+    }
+    
+    h3, .stSubheader, [data-testid="stHeader"] {
+        color: #4C1D95 !important;
+    }
+
+    /* Soft Lavender Highlights on Tabs & Dividers */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: #F3E8FF !important;
+        border-radius: 8px;
+        padding: 4px;
+    }
+
+    hr {
+        border-top: 2px solid #C084FC !important;
+    }
     </style>
 """,
     unsafe_allow_html=True,
@@ -30,7 +50,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(
-    "<div class='sub-header'>A Discrete Mathematics Application using Propositional Logic & Truth Table Evaluation</div>",
+    "<div class='sub-header'>Clinical Decision Support using Propositional Logic</div>",
     unsafe_allow_html=True,
 )
 
@@ -145,12 +165,9 @@ Target Deployment   : Rural & Primary Health Centers (PHCs)
 
 1. PATIENT VITALS & OBSERVATIONS
 --------------------------------------------------------------------------------
-- Body Temperature  : 
-{temp_val:.1f} °F  [Threshold ≥ 101.0°F]
-- Oxygen Saturation : 
-{spo2_val}%       [Threshold < 95%]
-- Observed Symptoms : 
-{', '.join([name for name, val in [('Fever', fever), ('Shortness of Breath', breathless), ('Cough', cough), ('Chest Pain', chest_pain)] if val]) or 'None reported'}
+- Body Temperature  : {temp_val:.1f} °F  [Threshold ≥ 101.0°F]
+- Oxygen Saturation : {spo2_val}%       [Threshold < 95%]
+- Observed Symptoms : {', '.join([name for name, val in [('Fever', fever), ('Shortness of Breath', breathless), ('Cough', cough), ('Chest Pain', chest_pain)] if val]) or 'None reported'}
 
 2. EVALUATION
 --------------------------------------------------------------------------------
@@ -193,6 +210,7 @@ tab1, tab2 = st.tabs([" Truth Table Evaluation", " Proposition Definitions"])
 
 with tab1:
     st.write("Truth table for evaluated propositions based on current inputs:")
+
     tt_data = {
         "Proposition": [
             "P (Fever/Temp)",
@@ -210,6 +228,7 @@ with tab1:
             "Chest Pain Present" if T else "No Chest Pain",
         ],
     }
+
     st.table(pd.DataFrame(tt_data))
 
 with tab2:
